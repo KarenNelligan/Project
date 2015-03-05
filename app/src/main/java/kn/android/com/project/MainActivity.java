@@ -49,10 +49,8 @@ public class MainActivity extends Activity {
             myAudioRecorder.prepare();
             myAudioRecorder.start();
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         start.setEnabled(false);
