@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 
         Long tsLong = System.currentTimeMillis()/1000;
 
-        outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
+        outputFile += "/app/appRecording"+tsLong.toString()+".wmv";
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
