@@ -1,6 +1,7 @@
 package kn.android.com.project;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -34,12 +35,16 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/20934924/audio-capture-without-overwriting-the-same-file-in-eclipse
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
+
         Long tsLong = System.currentTimeMillis()/1000;
 
-        outputFile += "/app/appRecording_"+tsLong.toString()+".mp3";
+        outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
         //end here
 
-        File file = new File("Output.txt");
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        File file = new File(file_path+ "/test.txt");
+
         FileOutputStream fos = null;
         try{
             fos = new FileOutputStream(file);
