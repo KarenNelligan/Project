@@ -2,7 +2,6 @@ package kn.android.com.project;
 
 import java.io.File;
 import java.io.IOException;
-
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -12,6 +11,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MainActivity extends Activity {
 
@@ -36,6 +39,29 @@ public class MainActivity extends Activity {
         outputFile += "/app/appRecording_"+tsLong.toString()+".mp3";
         //end here
 
+        File file = new File("Output.txt");
+        FileOutputStream fos = null;
+        try{
+            fos = new FileOutputStream(file);
+            fos.write(outputFile.getBytes());
+
+        }catch (FileNotFoundException e) {
+            System.out.println("File not found" + e);
+        }
+        catch (IOException ioe) {
+            System.out.println("Exception while writing file " + ioe);
+        }
+        finally {
+            try {
+                if (fos !=null) {
+                    fos.close();
+                }
+            }
+            catch (IOException ioe) {
+                System.out.println("Error while closing stream " + ioe);
+            }
+        }
+
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
@@ -43,6 +69,7 @@ public class MainActivity extends Activity {
         myAudioRecorder.setOutputFile(outputFile);
 
     }
+
     //method to start record
     public void start(View view){
         try {
@@ -83,5 +110,6 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
 
     }
+
 
 }
