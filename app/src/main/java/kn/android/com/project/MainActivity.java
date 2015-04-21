@@ -14,7 +14,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.BufferedOutputStream;
 public class MainActivity extends Activity {
 
     private MediaRecorder myAudioRecorder;
@@ -33,22 +37,23 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/20934924/audio-capture-without-overwriting-the-same-file-in-eclipse
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-
+//test comment
         Long tsLong = System.currentTimeMillis()/1000;
 
         outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
         //end here
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+     //   File file = new File(file_path + "/test.txt");
+/*
 
-
-
-        File file = new File("test.txt");
 
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
             fos.write(outputFile.getBytes());
+
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found" + e);
@@ -62,7 +67,33 @@ public class MainActivity extends Activity {
             } catch (IOException ioe) {
                 System.out.println("Error while closing stream " + ioe);
             }
+            byte[] buffer = new byte[(int)file.length()];
+
+        }*/
+        File file = new File(file_path + "/test1.txt");
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+
+       /* File file1 = new File(file_path);
+        InputStream fis = null;
+        try {
+            fis = new FileInputStream(outputFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte[] buffer = new byte[(int)file.length()];*/
+
 
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
