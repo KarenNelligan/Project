@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 
 //test comment
         //test comment 2
+        //test comment 3
         Long tsLong = System.currentTimeMillis()/1000;
 
         outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
