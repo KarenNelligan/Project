@@ -46,11 +46,23 @@ public class MainActivity extends Activity {
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-        //File file = new File(file_path + "/test.txt");
+       // String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File file = new File(file_path + "/test.txt");
+        File file1 =new File(outputFile);
+        byte[] fileData = new byte[(int)file1.length()];
+        try {
+            DataInputStream dis = new DataInputStream(openFileInput(outputFile));
+            dis.readFully(fileData);
+            dis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-       /* FileOutputStream fos = null;
+
+      /*  FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
             fos.write(outputFile.getBytes());
