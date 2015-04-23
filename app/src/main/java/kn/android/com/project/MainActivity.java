@@ -19,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
 public class MainActivity extends Activity {
 
     private MediaRecorder myAudioRecorder;
@@ -37,13 +39,7 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/20934924/audio-capture-without-overwriting-the-same-file-in-eclipse
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-//test comment
-        //test comment 2
-        //test comment 3
-        //test comment 4
-        //test comment 5
-        //test comment 6
-        //test comment 7
+
         Long tsLong = System.currentTimeMillis()/1000;
 
         outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
@@ -51,11 +47,10 @@ public class MainActivity extends Activity {
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
         String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-     //   File file = new File(file_path + "/test.txt");
-/*
+        //File file = new File(file_path + "/test.txt");
 
 
-        FileOutputStream fos = null;
+       /* FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
             fos.write(outputFile.getBytes());
@@ -75,23 +70,10 @@ public class MainActivity extends Activity {
             }
             byte[] buffer = new byte[(int)file.length()];
 
-        }*/
-        File file = new File(file_path + "/test1.txt");
-        int size = (int) file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
-       /* File file1 = new File(file_path);
+
+        File file1 = new File(file_path);
         InputStream fis = null;
         try {
             fis = new FileInputStream(outputFile);
