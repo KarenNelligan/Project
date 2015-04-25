@@ -10,17 +10,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.OutputStreamWriter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.FileInputStream;
 public class MainActivity extends Activity {
 
     private MediaRecorder myAudioRecorder;
@@ -46,23 +45,14 @@ public class MainActivity extends Activity {
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
-       // String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
         File file = new File(file_path + "/test.txt");
-        File file1 =new File(outputFile);
-        byte[] fileData = new byte[(int)file1.length()];
-        try {
-            DataInputStream dis = new DataInputStream(openFileInput(outputFile));
-            dis.readFully(fileData);
-            dis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
 
-      /*  FileOutputStream fos = null;
+
+        FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
             fos.write(outputFile.getBytes());
@@ -80,19 +70,9 @@ public class MainActivity extends Activity {
             } catch (IOException ioe) {
                 System.out.println("Error while closing stream " + ioe);
             }
-            byte[] buffer = new byte[(int)file.length()];
+
 
         }
-
-
-        File file1 = new File(file_path);
-        InputStream fis = null;
-        try {
-            fis = new FileInputStream(outputFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] buffer = new byte[(int)file.length()];*/
 
 
         myAudioRecorder = new MediaRecorder();
@@ -120,6 +100,8 @@ public class MainActivity extends Activity {
         stop.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 
+
+
     }
 
     public void stop(View view){
@@ -130,6 +112,7 @@ public class MainActivity extends Activity {
         play.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Audio recorded successfully",
                 Toast.LENGTH_LONG).show();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
