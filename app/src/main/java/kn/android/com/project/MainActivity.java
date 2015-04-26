@@ -2,6 +2,7 @@ package kn.android.com.project;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import java.io.File;
@@ -23,6 +27,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Scanner;
 
 public class MainActivity extends Activity {
@@ -47,7 +54,7 @@ public class MainActivity extends Activity {
 
         Long tsLong = System.currentTimeMillis()/1000;
 
-        outputFile += "/app/appRecording_"+tsLong.toString()+".wmv";
+        outputFile += "/app/appRecording_"+tsLong.toString()+".wav";
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -72,8 +79,8 @@ public class MainActivity extends Activity {
             myAudioRecorder.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ie) {
+            ie.printStackTrace();
         }
         start.setEnabled(false);
         stop.setEnabled(true);
@@ -110,19 +117,20 @@ public class MainActivity extends Activity {
     }
 
   public void write (View view) {
-      Object object = outputFile;
-      String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+     String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
       File file = new File(file_path1 + "/test1.txt");
 
-      try {
-          FileInputStream fileInputStream = new FileInputStream(outputFile);
-          FileInputStream fis = null;
-          fis = new FileInputStream(outputFile);
-          fis.read(outputFile.getBytes());
 
-          if (fis !=null) {
-              fis.close();
-          }
+      try {
+          DataInputStream dataInputStream = new DataInputStream(new FileInputStream(outputFile));
+          DataInputStream dis = null;
+          dis = new DataInputStream(new FileInputStream (outputFile));
+          dis.read(outputFile.getBytes());
+          if (dis !=null) {
+              dis.close();
+         }
+
+
       } catch (FileNotFoundException e) {
           e.printStackTrace();
       }
@@ -131,10 +139,10 @@ public class MainActivity extends Activity {
           e.printStackTrace();
       }
 
-      FileOutputStream fos = null;
+      DataOutputStream dos = null;
       try {
-          fos = new FileOutputStream(file);
-          fos.write(outputFile.getBytes());
+          dos = new DataOutputStream( new FileOutputStream (file) );
+          dos.write(outputFile.getBytes());
       } catch (FileNotFoundException e) {
           System.out.println("File not found" + e);
       }
@@ -143,14 +151,27 @@ public class MainActivity extends Activity {
           System.out.println("Exception while writing file " + ioe);
       } finally {
           try {
-              if (fos != null) {
-                  fos.close();
+              if (dos != null) {
+                  dos.close();
               }
 
           } catch (IOException ioe) {
               System.out.println("Error while closing stream " + ioe);
           }
       }
-
+     /* String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+      File file = new File(file_path1 + "/bintest1.txt");
+      try {
+          FileOutputStream  fileOs = new FileOutputStream(file);
+          ObjectOutputStream os = new ObjectOutputStream(fileOs);
+          os.write(Integer.parseInt(outputFile));
+          os.writeDouble(3.1415);
+          os.close();
+      } catch (FileNotFoundException e) {
+          e.printStackTrace();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }*/
+      Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
   }
 }
