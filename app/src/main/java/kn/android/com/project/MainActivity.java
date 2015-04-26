@@ -1,8 +1,10 @@
 package kn.android.com.project;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.OutputStreamWriter;
 
@@ -20,11 +23,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
+import java.util.Scanner;
+
 public class MainActivity extends Activity {
 
     private MediaRecorder myAudioRecorder;
     private String outputFile = null;
     private Button start,stop,play;
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,33 +52,6 @@ public class MainActivity extends Activity {
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-        File file = new File(file_path + "/test.txt");
-
-
-
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-            fos.write(outputFile.getBytes());
-
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found" + e);
-        } catch (IOException ioe) {
-            System.out.println("Exception while writing file " + ioe);
-        } finally {
-            try {
-                if (fos != null) {
-                    fos.close();
-                }
-            } catch (IOException ioe) {
-                System.out.println("Error while closing stream " + ioe);
-            }
-
-
-        }
 
 
         myAudioRecorder = new MediaRecorder();
@@ -130,5 +109,48 @@ public class MainActivity extends Activity {
 
     }
 
+  public void write (View view) {
+      Object object = outputFile;
+      String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+      File file = new File(file_path1 + "/test1.txt");
 
+      try {
+          FileInputStream fileInputStream = new FileInputStream(outputFile);
+          FileInputStream fis = null;
+          fis = new FileInputStream(outputFile);
+          fis.read(outputFile.getBytes());
+
+          if (fis !=null) {
+              fis.close();
+          }
+      } catch (FileNotFoundException e) {
+          e.printStackTrace();
+      }
+
+      catch (IOException e) {
+          e.printStackTrace();
+      }
+
+      FileOutputStream fos = null;
+      try {
+          fos = new FileOutputStream(file);
+          fos.write(outputFile.getBytes());
+      } catch (FileNotFoundException e) {
+          System.out.println("File not found" + e);
+      }
+
+      catch (IOException ioe) {
+          System.out.println("Exception while writing file " + ioe);
+      } finally {
+          try {
+              if (fos != null) {
+                  fos.close();
+              }
+
+          } catch (IOException ioe) {
+              System.out.println("Error while closing stream " + ioe);
+          }
+      }
+
+  }
 }
