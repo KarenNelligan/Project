@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/20934924/audio-capture-without-overwriting-the-same-file-in-eclipse
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-
+        //test comment
         Long tsLong = System.currentTimeMillis()/1000;
 
         outputFile += "/app/appRecording_"+tsLong.toString()+".wav";
