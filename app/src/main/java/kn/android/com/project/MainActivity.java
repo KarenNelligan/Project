@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
     }
 
   public void write (View view) {
-     String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+  /*   String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
       File file = new File(file_path1 + "/test1.txt");
 
 
@@ -158,7 +158,7 @@ public class MainActivity extends Activity {
           } catch (IOException ioe) {
               System.out.println("Error while closing stream " + ioe);
           }
-      }
+      }*/
      /* String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
       File file = new File(file_path1 + "/bintest1.txt");
       try {
@@ -172,6 +172,8 @@ public class MainActivity extends Activity {
       } catch (IOException e) {
           e.printStackTrace();
       }*/
+
+
       Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
   }
 }
