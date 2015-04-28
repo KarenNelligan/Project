@@ -2,7 +2,6 @@ package kn.android.com.project;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
@@ -12,25 +11,15 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.Scanner;
+import java.util.Formatter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class MainActivity extends Activity {
 
@@ -117,6 +106,45 @@ public class MainActivity extends Activity {
     }
 
   public void write (View view) {
+      String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+      File file = new File(file_path1 + "/test1.txt");
+      try {
+// open the file for reading
+          InputStream instream = new FileInputStream(outputFile);
+
+// if file the available for reading
+          if (instream != null) {
+              // prepare the file for reading
+              InputStreamReader inputreader = new InputStreamReader(instream);
+              BufferedReader buffreader = new BufferedReader(inputreader);
+
+              String line;
+
+              // read every line of the file into the line-variable, on line at the time
+              do {
+                  line = buffreader.readLine();
+                  // do something with the line
+              } while (line != null);
+
+          }
+      } catch (Exception ex) {
+          // print stack trace.
+      } finally {
+// close the file.
+
+          Formatter instream = null;
+          instream.close();
+      }
+      try {
+          FileWriter fileStream = new FileWriter(file);
+          BufferedWriter writer = new BufferedWriter(fileStream);
+          writer.write(readFile(outputFile));
+          writer.close();
+      }catch (Exception e){
+          e.printStackTrace();
+      }
+
+
   /*   String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
       File file = new File(file_path1 + "/test1.txt");
 
@@ -176,4 +204,8 @@ public class MainActivity extends Activity {
 
       Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
   }
+
+    private int readFile(String outputFile) {
+        return 0;
+    }
 }
