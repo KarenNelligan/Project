@@ -133,6 +133,7 @@ public class MainActivity extends Activity {
 // close the file.
 
           Formatter instream = null;
+          assert instream != null;
           instream.close();
       }
       try {
@@ -144,7 +145,7 @@ public class MainActivity extends Activity {
           e.printStackTrace();
       }
 
-
+//test comment 1
   /*   String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
       File file = new File(file_path1 + "/test1.txt");
 
