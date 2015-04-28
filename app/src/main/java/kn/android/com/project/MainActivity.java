@@ -12,28 +12,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import java.io.File;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.util.Formatter;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 public class MainActivity extends Activity {
 
     private MediaRecorder myAudioRecorder;
     private String outputFile = null;
-    private Button start,stop,play;
+    private Button start, stop, play;
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        start = (Button)findViewById(R.id.button1);
-        stop = (Button)findViewById(R.id.button2);
-        play = (Button)findViewById(R.id.button3);
+        start = (Button) findViewById(R.id.button1);
+        stop = (Button) findViewById(R.id.button2);
+        play = (Button) findViewById(R.id.button3);
 
         stop.setEnabled(false);
         play.setEnabled(false);
@@ -41,13 +39,12 @@ public class MainActivity extends Activity {
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         //test comment
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis() / 1000;
 
-        outputFile += "/app/appRecording_"+tsLong.toString()+".wav";
+        outputFile += "/app/appRecording_" + tsLong.toString() + ".wav";
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
-
 
 
         myAudioRecorder = new MediaRecorder();
@@ -62,7 +59,7 @@ public class MainActivity extends Activity {
     }
 
     //method to start record
-    public void start(View view){
+    public void start(View view) {
         try {
             myAudioRecorder.prepare();
             myAudioRecorder.start();
@@ -76,26 +73,27 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
 
 
-
     }
 
-    public void stop(View view){
+    public void stop(View view) {
         myAudioRecorder.stop();
         myAudioRecorder.release();
-        myAudioRecorder  = null;
+        myAudioRecorder = null;
         stop.setEnabled(false);
         play.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Audio recorded successfully",
                 Toast.LENGTH_LONG).show();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         return false;
     }
+
     public void play(View view) throws IllegalArgumentException,
-            SecurityException, IllegalStateException, IOException{
+            SecurityException, IllegalStateException, IOException {
 
         MediaPlayer m = new MediaPlayer();
         m.setDataSource(outputFile);
@@ -105,108 +103,54 @@ public class MainActivity extends Activity {
 
     }
 
-  public void write (View view) {
-      String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-      File file = new File(file_path1 + "/test1.txt");
-      try {
-// open the file for reading
-          InputStream instream = new FileInputStream(outputFile);
+    public void readToFile(View view) {
+    /*
+    Title Java File: Reading and Writing Files in Java
+    Author John Purcell
+    Site name caveofprogramming.com
+    Date 2015
+    Availability https://www.caveofprogramming.com/java/java-file-reading-and-writing-files-in-java.html (Accessed 28 April 2015)
+     */
+      String fileName = outputFile;
 
-// if file the available for reading
-          if (instream != null) {
-              // prepare the file for reading
-              InputStreamReader inputreader = new InputStreamReader(instream);
-              BufferedReader buffreader = new BufferedReader(inputreader);
+        try {
+            byte[] buffer = new byte[1000];
+            FileInputStream inputStream = new FileInputStream(fileName);
+            int total = 0;
+            int nRead = 0;
+            while ((nRead = inputStream.read(buffer)) !=-1){
+                System.out.println(new String(buffer));
+                total += nRead;
+            }
+            inputStream.close();
+            Toast.makeText(getApplicationContext(), String.format("Read %d bytes", total), Toast.LENGTH_LONG).show();
+           // System.out.println("Read " + total + " bytes");
 
-              String line;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-              // read every line of the file into the line-variable, on line at the time
-              do {
-                  line = buffreader.readLine();
-                  // do something with the line
-              } while (line != null);
-
-          }
-      } catch (Exception ex) {
-          // print stack trace.
-      } finally {
-// close the file.
-
-          Formatter instream = null;
-          assert instream != null;
-          instream.close();
-      }
-      try {
-          FileWriter fileStream = new FileWriter(file);
-          BufferedWriter writer = new BufferedWriter(fileStream);
-          writer.write(readFile(outputFile));
-          writer.close();
-      }catch (Exception e){
-          e.printStackTrace();
-      }
-
-//test comment 1
-  /*   String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-      File file = new File(file_path1 + "/test1.txt");
-
-
-      try {
-          DataInputStream dataInputStream = new DataInputStream(new FileInputStream(outputFile));
-          DataInputStream dis = null;
-          dis = new DataInputStream(new FileInputStream (outputFile));
-          dis.read(outputFile.getBytes());
-          if (dis !=null) {
-              dis.close();
-         }
+        }
+        public void writeToFile (View view) {
+            String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String fileName1 = file_path1 + "/test4.txt";
+            try {
+                String bytes = outputFile;
+                byte[] buffer = bytes.getBytes();
+                FileOutputStream outputStream = new FileOutputStream(fileName1);
+                outputStream.write(buffer);
+                outputStream.close();
+                Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
 
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      }
+            Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
+        }
 
-      catch (IOException e) {
-          e.printStackTrace();
-      }
-
-      DataOutputStream dos = null;
-      try {
-          dos = new DataOutputStream( new FileOutputStream (file) );
-          dos.write(outputFile.getBytes());
-      } catch (FileNotFoundException e) {
-          System.out.println("File not found" + e);
-      }
-
-      catch (IOException ioe) {
-          System.out.println("Exception while writing file " + ioe);
-      } finally {
-          try {
-              if (dos != null) {
-                  dos.close();
-              }
-
-          } catch (IOException ioe) {
-              System.out.println("Error while closing stream " + ioe);
-          }
-      }*/
-     /* String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-      File file = new File(file_path1 + "/bintest1.txt");
-      try {
-          FileOutputStream  fileOs = new FileOutputStream(file);
-          ObjectOutputStream os = new ObjectOutputStream(fileOs);
-          os.write(Integer.parseInt(outputFile));
-          os.writeDouble(3.1415);
-          os.close();
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      }*/
-
-
-      Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
-  }
-
-    private int readFile(String outputFile) {
-        return 0;
     }
-}
