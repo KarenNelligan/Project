@@ -7,23 +7,13 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class MainActivity extends Activity {
 
@@ -45,14 +35,11 @@ public class MainActivity extends Activity {
         //http://stackoverflow.com/questions/20934924/audio-capture-without-overwriting-the-same-file-in-eclipse
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-        //test comment
+
         Long tsLong = System.currentTimeMillis() / 1000;
 
         outputFile += "/app/appRecording_" + tsLong.toString() + ".wmv";
         //end here
-
-        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
-
 
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -70,10 +57,8 @@ public class MainActivity extends Activity {
         try {
             myAudioRecorder.prepare();
             myAudioRecorder.start();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
-        } catch (IOException ie) {
-            ie.printStackTrace();
         }
         start.setEnabled(false);
         stop.setEnabled(true);
@@ -128,7 +113,8 @@ public class MainActivity extends Activity {
             int nRead;
 
             while ((nRead = inputStream.read(buffer)) !=-1){
-                System.out.println(new String(buffer));
+                //prints bytes to console also
+                //System.out.println(new String(buffer));
                 total += nRead;
             }
             //end of referenced code
@@ -138,8 +124,6 @@ public class MainActivity extends Activity {
             System.out.println("Read " + total + " bytes");
 
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException ie) {
             ie.printStackTrace();
         }
@@ -151,15 +135,11 @@ public class MainActivity extends Activity {
             String fileName1 = file_path1 + "/test4.txt";
 
             try {
-
-                String fileName = outputFile;
-                byte[] buffer = new byte[10000];
+                byte[] buffer = new byte[100000];
                 FileOutputStream outputStream = new FileOutputStream(fileName1);
                 outputStream.write(buffer);
                 outputStream.close();
                 Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException ie) {
                 ie.printStackTrace();
             }
