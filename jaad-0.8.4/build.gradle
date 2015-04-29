@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('jaad-0.8.4.jar'))

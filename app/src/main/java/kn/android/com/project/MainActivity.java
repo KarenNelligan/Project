@@ -7,16 +7,23 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class MainActivity extends Activity {
 
@@ -41,7 +48,7 @@ public class MainActivity extends Activity {
         //test comment
         Long tsLong = System.currentTimeMillis() / 1000;
 
-        outputFile += "/app/appRecording_" + tsLong.toString() + ".wav";
+        outputFile += "/app/appRecording_" + tsLong.toString() + ".wmv";
         //end here
 
         String file_path = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -111,46 +118,55 @@ public class MainActivity extends Activity {
     Date 2015
     Availability https://www.caveofprogramming.com/java/java-file-reading-and-writing-files-in-java.html (Accessed 28 April 2015)
      */
-      String fileName = outputFile;
+
+     String fileName = outputFile;
 
         try {
             byte[] buffer = new byte[1000];
             FileInputStream inputStream = new FileInputStream(fileName);
             int total = 0;
-            int nRead = 0;
+            int nRead;
+
             while ((nRead = inputStream.read(buffer)) !=-1){
                 System.out.println(new String(buffer));
                 total += nRead;
             }
-            inputStream.close();
+            //end of referenced code
+
+
             Toast.makeText(getApplicationContext(), String.format("Read %d bytes", total), Toast.LENGTH_LONG).show();
-           // System.out.println("Read " + total + " bytes");
+            System.out.println("Read " + total + " bytes");
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ie) {
+            ie.printStackTrace();
         }
 
-        }
+    }
+        @TargetApi(Build.VERSION_CODES.KITKAT)
         public void writeToFile (View view) {
-            String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+          String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
             String fileName1 = file_path1 + "/test4.txt";
+
             try {
-                String bytes = outputFile;
-                byte[] buffer = bytes.getBytes();
+
+                String fileName = outputFile;
+                byte[] buffer = new byte[10000];
                 FileOutputStream outputStream = new FileOutputStream(fileName1);
                 outputStream.write(buffer);
                 outputStream.close();
                 Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ie) {
+                ie.printStackTrace();
             }
 
 
-            Toast.makeText(getApplicationContext(), "Data been written to file", Toast.LENGTH_LONG).show();
+
+
         }
 
     }

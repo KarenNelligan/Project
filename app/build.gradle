@@ -23,6 +23,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('lib/fftlib.jar')
-
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile project(':jaad-0.8.4')
 }
