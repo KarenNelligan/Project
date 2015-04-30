@@ -21,6 +21,7 @@ public class MainActivity extends Activity {
     private String outputFile = null;
     private Button start, stop, play;
 
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,7 @@ public class MainActivity extends Activity {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void readToFile(View view) {
     /*
     Title Java File: Reading and Writing Files in Java
@@ -103,7 +105,6 @@ public class MainActivity extends Activity {
     Date 2015
     Availability https://www.caveofprogramming.com/java/java-file-reading-and-writing-files-in-java.html (Accessed 28 April 2015)
      */
-
      String fileName = outputFile;
 
         try {
@@ -118,35 +119,31 @@ public class MainActivity extends Activity {
                 total += nRead;
             }
             //end of referenced code
-
-
             Toast.makeText(getApplicationContext(), String.format("Read %d bytes", total), Toast.LENGTH_LONG).show();
             System.out.println("Read " + total + " bytes");
-
-
         } catch (IOException ie) {
             ie.printStackTrace();
         }
 
     }
-        @TargetApi(Build.VERSION_CODES.KITKAT)
-        public void writeToFile (View view) {
-          String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-            String fileName1 = file_path1 + "/test4.txt";
 
-            try {
-                byte[] buffer = new byte[100000];
-                FileOutputStream outputStream = new FileOutputStream(fileName1);
-                outputStream.write(buffer);
-                outputStream.close();
-                Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
-            } catch (IOException ie) {
-                ie.printStackTrace();
-            }
+    // @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void writeToFile(View view) {
+        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName1 = file_path1 + "/test4.txt";
+
+        try {
 
 
-
-
+            // byte[] buffer = outputFile.getBytes();
+            byte[] buffer = new byte[10000];
+            FileOutputStream outputStream = new FileOutputStream(fileName1);
+            outputStream.write(buffer);
+            outputStream.close();
+            Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
+        } catch (IOException ie) {
+            ie.printStackTrace();
         }
 
     }
+}
