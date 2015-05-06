@@ -1,6 +1,5 @@
 package kn.android.com.project;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -22,7 +22,6 @@ public class MainActivity extends Activity {
     private Button start, stop, play;
 
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +38,13 @@ public class MainActivity extends Activity {
 
         Long tsLong = System.currentTimeMillis() / 1000;
 
-        outputFile += "/app/appRecording_" + tsLong.toString() + ".wmv";
+        outputFile += "/app/appRecording_" + tsLong.toString() + ".wav";
         //end here
 
         myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         myAudioRecorder.setAudioChannels(1);
         myAudioRecorder.setAudioSamplingRate(8000);
         myAudioRecorder.setAudioEncodingBitRate(16000);
@@ -53,7 +52,7 @@ public class MainActivity extends Activity {
 
     }
 
-    //method to start record
+    //method to start recording the audio
     public void start(View view) {
         try {
             myAudioRecorder.prepare();
@@ -64,10 +63,8 @@ public class MainActivity extends Activity {
         start.setEnabled(false);
         stop.setEnabled(true);
         Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
-
-
     }
-
+    //method to stop recording the audio
     public void stop(View view) {
         myAudioRecorder.stop();
         myAudioRecorder.release();
@@ -78,13 +75,7 @@ public class MainActivity extends Activity {
                 Toast.LENGTH_LONG).show();
 
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        return false;
-    }
-
+    //method to play recorded audio
     public void play(View view) throws IllegalArgumentException,
             SecurityException, IllegalStateException, IOException {
 
@@ -95,8 +86,14 @@ public class MainActivity extends Activity {
         Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        return false;
+    }
+
+
+
     public void readToFile(View view) {
     /*
     Title Java File: Reading and Writing Files in Java
@@ -105,15 +102,15 @@ public class MainActivity extends Activity {
     Date 2015
     Availability https://www.caveofprogramming.com/java/java-file-reading-and-writing-files-in-java.html (Accessed 28 April 2015)
      */
-     String fileName = outputFile;
+        String fileName = outputFile;
 
         try {
             byte[] buffer = new byte[1000];
-            FileInputStream inputStream = new FileInputStream(fileName);
+            FileInputStream inputStream = new FileInputStream(outputFile);
             int total = 0;
             int nRead;
 
-            while ((nRead = inputStream.read(buffer)) !=-1){
+            while ((nRead = inputStream.read(buffer)) != -1) {
                 //prints bytes to console also
                 //System.out.println(new String(buffer));
                 total += nRead;
@@ -124,19 +121,32 @@ public class MainActivity extends Activity {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
-
-    }
-
-    // @TargetApi(Build.VERSION_CODES.KITKAT)
-    public void writeToFile(View view) {
         String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String fileName1 = file_path1 + "/test4.txt";
+        String fileName1 = file_path1 + "/audioData.txt";
 
         try {
 
+            String bytes = outputFile;
+            byte[] buffer = bytes.getBytes();
+            // byte[] buffer = new byte[10000];
+            FileOutputStream outputStream = new FileOutputStream(fileName1);
+            outputStream.write(buffer);
+            outputStream.close();
+            Toast.makeText(getApplicationContext(), "Wrote " + buffer.length + " bytes", Toast.LENGTH_LONG).show();
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        }
 
-            // byte[] buffer = outputFile.getBytes();
-            byte[] buffer = new byte[10000];
+    }
+
+    public void writeToFile(View view) throws FileNotFoundException {
+        String file_path1 = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String fileName1 = file_path1 + "/audioData.txt";
+
+        try {
+            String bytes = outputFile;
+            byte[] buffer = bytes.getBytes();
+           // byte[] buffer = new byte[10000];
             FileOutputStream outputStream = new FileOutputStream(fileName1);
             outputStream.write(buffer);
             outputStream.close();
